@@ -65,7 +65,7 @@ This exposed a structural weakness across Cardano's entire "visibility layer": t
 ## 6. Live Project Link
 
 
-**Live Demo:** `[Insert link here]`
+**Live Demo:** [Link](https://shoko-adastra.vercel.app/)
 
 
 ---
