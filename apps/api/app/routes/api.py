@@ -19,7 +19,7 @@ from typing import Union
 
 from fastapi import APIRouter, Query
 
-from blockchain import canonical_metrics, load_chain
+from blockchain import ChainSettlement, canonical_metrics, load_chain
 from protocol.claim import Claim
 from protocol.enums import ClaimStatus, Metric
 from protocol.indexer import Indexer
@@ -40,6 +40,7 @@ from ..services.challenge_service import ChallengeService
 from ..services.claim_service import ClaimService
 from ..services.dashboard_service import DashboardService
 from ..services.indexer_service import IndexerService
+from ..services.onchain_service import OnchainService
 from ..services.slashing_service import SlashingService
 from ..services.verification_service import VerificationService
 
@@ -146,6 +147,25 @@ def list_slash_events(
     """List slashing events, newest first."""
 
     return SlashingService().list_events(indexer_id=indexer_id)
+
+
+# --------------------------------------------------------------------------
+# On-chain settlements (Aiken validator layer)
+# --------------------------------------------------------------------------
+@router.get("/onchain/script", tags=["onchain"])
+def get_script_info() -> dict:
+    """Validator metadata + aggregate on-chain settlement totals."""
+
+    return OnchainService().script_info()
+
+
+@router.get("/onchain/settlements", response_model=list[ChainSettlement], tags=["onchain"])
+def list_settlements(
+    claim_id: str | None = Query(default=None),
+) -> list[ChainSettlement]:
+    """Simulated/real on-chain settlements (datum + redeemer + tx ref)."""
+
+    return OnchainService().list_settlements(claim_id=claim_id)
 
 
 # --------------------------------------------------------------------------

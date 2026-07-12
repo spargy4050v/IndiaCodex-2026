@@ -10,6 +10,7 @@ from __future__ import annotations
 
 from threading import RLock
 
+from blockchain.onchain import ChainSettlement
 from protocol.challenge import Challenge
 from protocol.claim import Claim
 from protocol.indexer import Indexer
@@ -27,6 +28,7 @@ class InMemoryStore:
         self.verifications: dict[str, VerificationResult] = {}
         self.challenges: dict[str, Challenge] = {}
         self.slash_events: dict[str, SlashEvent] = {}
+        self.settlements: dict[str, ChainSettlement] = {}
 
     # -- lifecycle ---------------------------------------------------------
     def reset(self) -> None:
@@ -36,6 +38,7 @@ class InMemoryStore:
             self.verifications.clear()
             self.challenges.clear()
             self.slash_events.clear()
+            self.settlements.clear()
 
     # -- indexers ----------------------------------------------------------
     def add_indexer(self, indexer: Indexer) -> Indexer:
@@ -93,6 +96,18 @@ class InMemoryStore:
 
     def list_slash_events(self) -> list[SlashEvent]:
         return list(self.slash_events.values())
+
+    # -- on-chain settlements ---------------------------------------------
+    def add_settlement(self, settlement: ChainSettlement) -> ChainSettlement:
+        with self._lock:
+            self.settlements[settlement.settlement_id] = settlement
+        return settlement
+
+    def list_settlements(self) -> list[ChainSettlement]:
+        return list(self.settlements.values())
+
+    def settlements_for(self, claim_id: str) -> list[ChainSettlement]:
+        return [s for s in self.settlements.values() if s.claim_id == claim_id]
 
 
 # Process-wide singleton used by the service layer.

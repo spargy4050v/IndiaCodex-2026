@@ -9,6 +9,7 @@ from __future__ import annotations
 from .base import ChainProvider, canonical_metrics, load_chain
 from .blockfrost import BlockfrostProvider
 from .koios import KoiosProvider
+from .onchain import ChainAnchor, ChainSettlement, chain_anchor
 
 
 def default_providers() -> list[ChainProvider]:
@@ -19,9 +20,12 @@ def default_providers() -> list[ChainProvider]:
 
 __all__ = [
     "BlockfrostProvider",
+    "ChainAnchor",
     "ChainProvider",
+    "ChainSettlement",
     "KoiosProvider",
     "canonical_metrics",
+    "chain_anchor",
     "default_providers",
     "load_chain",
 ]

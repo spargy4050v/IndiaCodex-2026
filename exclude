@@ -45,3 +45,6 @@ logs/
 tmp/
 temp/
 .cache/
+
+# TypeScript incremental build info
+*.tsbuildinfo

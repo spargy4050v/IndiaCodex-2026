@@ -19,6 +19,7 @@ from ..config import get_settings
 from ..store import InMemoryStore, get_store
 from ..utils.errors import NotFoundError, ValidationError
 from .engines import run_consensus, verification_engine
+from .onchain_service import OnchainService
 from .slashing_service import SlashingService
 
 
@@ -29,9 +30,11 @@ class ChallengeService:
         self,
         store: InMemoryStore | None = None,
         slashing_service: SlashingService | None = None,
+        onchain_service: OnchainService | None = None,
     ) -> None:
         self.store = store or get_store()
         self.slashing = slashing_service or SlashingService(self.store)
+        self.onchain = onchain_service or OnchainService(self.store)
         self.settings = get_settings()
 
     def challenge(
@@ -84,6 +87,13 @@ class ChallengeService:
             claim.mark(ClaimStatus.VERIFIED)
 
         self.store.add_challenge(challenge)
+
+        # Anchor an upheld challenge as an on-chain SlashClaim (best-effort).
+        try:
+            self.onchain.record_challenge(challenge, claim, result, slash_event)
+        except Exception:  # noqa: BLE001 - chain anchoring must not fail challenges
+            pass
+
         return challenge, claim, result, slash_event
 
     def list(self) -> list[Challenge]:

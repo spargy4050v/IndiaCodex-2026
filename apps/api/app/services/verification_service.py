@@ -18,6 +18,7 @@ from ..config import get_settings
 from ..store import InMemoryStore, get_store
 from ..utils.errors import NotFoundError
 from .engines import run_consensus, verification_engine
+from .onchain_service import OnchainService
 from .slashing_service import SlashingService
 
 
@@ -28,9 +29,11 @@ class VerificationService:
         self,
         store: InMemoryStore | None = None,
         slashing_service: SlashingService | None = None,
+        onchain_service: OnchainService | None = None,
     ) -> None:
         self.store = store or get_store()
         self.slashing = slashing_service or SlashingService(self.store)
+        self.onchain = onchain_service or OnchainService(self.store)
         self.settings = get_settings()
 
     def verify_claim(self, claim_id: str) -> tuple[Claim, VerificationResult, object | None]:
@@ -66,6 +69,12 @@ class VerificationService:
                     reason=SlashReason.FALSE_CLAIM,
                 )
                 claim.mark(ClaimStatus.SLASHED)
+
+        # Anchor the outcome on-chain (best-effort; never breaks the protocol).
+        try:
+            self.onchain.record_verification(claim, result, slash_event)
+        except Exception:  # noqa: BLE001 - chain anchoring must not fail verification
+            pass
 
         return claim, result, slash_event
 
