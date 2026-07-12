@@ -1,51 +1,91 @@
-# IndiaCodex 2026
+# SHOKO
+
+### A decentralized, self-verifying data layer for Cardano.
+
+---
+
+## 1. Your Project
+
+**SHOKO**
+
+Team: **ADAstra**
+Event: **IndiaCodex'26 — Cardano Hackathon (General Cardano Track)**
+
+---
+
+## 2. Your Project's Description
+
+SHOKO is a decentralized, cryptoeconomically-enforced data verification protocol for Cardano. Instead of relying on a single company's servers to report what's happening on-chain (pool performance, DeFi activity, protocol health), SHOKO lets **anyone** submit that data — but only by staking real ADA behind it as a promise of accuracy.
+
+Every claim is:
+- **Staked** — the submitter locks up ADA as a financial guarantee
+- **Recorded permanently** — minted as an on-chain NFT receipt, timestamped and tamper-proof
+- **Independently verifiable** — checked against real Cardano chain state, made possible by Cardano's deterministic eUTXO model
+- **Automatically enforced** — if the claim is wrong, the staked deposit is slashed by the validator, with no human arbitration required
+
+The result is a data layer that has no single point of organizational failure — no company, no payroll, no small team whose departure can take Cardano's visibility infrastructure down with them.
+
+---
+
+## 3. What Problem You Are Trying to Solve
+
+In June 2026, **TapTools** — the default analytics platform used by over 1 million Cardano users for prices, DeFi metrics, staking data, and portfolio tracking — shut down permanently. The cause wasn't bad or dishonest data; TapTools was reliable throughout its operation. The cause was **organizational collapse**: five senior executives (both co-founders, the COO, the CTO, and the CTO's replacement) left the company within a single year, alongside rising infrastructure costs during a prolonged market downturn.
+
+This exposed a structural weakness across Cardano's entire "visibility layer": the tools people depend on to understand what's happening on-chain are almost all run by single, centralized companies. If the specific handful of people running any one of them leave, or the company runs out of funding, the data and dashboards an entire ecosystem depends on can vanish overnight — with no warning and no automatic replacement. Even current, well-funded alternatives (e.g., BendingAI) share this same structural risk, regardless of product quality.
+
+**SHOKO's core problem statement:** Cardano doesn't have a data-accuracy problem — it has a trust-custody problem. The ecosystem needs a data verification layer that doesn't depend on any single company's payroll to keep functioning.
+
+---
+
+## 4. Tech Stack Used While Building the Project
+
+**Smart Contract Layer**
+- **Aiken** — validator logic for staking, verification, and automated slashing
+- Deployed on **Cardano Preprod Testnet**
+
+**Data Layer**
+- **Blockfrost** — reads live Cardano chain data for independent claim verification
+- **Native Cardano Assets** — claim NFT receipts, minted directly on-ledger
+
+**Application Layer**
+- **Mesh SDK** — transaction building and wallet integration
+- **Next.js** + **Tailwind CSS** — live dashboard frontend
+- **Cardano Connect with Wallet** (CIP-30/45) — wallet connection
+
+**Development & Testing**
+- **Yaci DevKit** — local Cardano devnet for rapid iteration
+- **Lace Anatomy** / **Gastronomy** — transaction and validator debugging
+
+---
+
+## 5. Project Demo Photos, Videos
+
+![Main Page](image.png)
+
+## 6. Live Project Link
 
 
-Welcome to [**IndiaCodex'26 Hackathon**](https://www.indiacodex.com) powered by [**Nucast Labs**](https://nucast.io/)
-Please find attached the rules and steps to submit your project for the hackathon :
-
-## Step - 1: Fork the repository
-
-Fork the given repository to your GitHub profile.
+**Live Demo:** `[Insert link here]`
 
 
-## Step - 2: Create your folder
+---
 
-After forking the repository, clone the repository to your pc/desktop, and then create a folder with your **TeamName** as the folder name.
+## 7. Your PPT Link
 
-Unclear about cloning? No problem, we've got your back. Click [here](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) to learn about it.
+**Presentation:** https://docs.google.com/presentation/d/1OGpj-yvlniN6fNMtnKRhVn37OhHPVfJZLuuc3xRzjvo/edit?usp=sharing
 
-## Step - 3: Project Code Base
 
-Push Your code base in this folder.
-This should include all your files for frontend as well as the backend
+---
 
-## Step - 4: Team Info and Project Info
+## 8. Your Team Members' Info
 
-In your **TeamName** folder, make sure to include the below details in the README.md:
+| Name | Team |
+|---|---|
+| K Satya Sai Nischal | ADAstra |
+| D Riyaz | ADAstra |
+| Rishith Kumar Guntuka | ADAstra |
+| Isha Parveen | ADAstra |
 
-1. Your Project
-2. Your Project's Description
-3. What problem you are trying to solve
-4. Tech Stack used while building the project
-5. Project Demo Photos, Videos
-6. If your project is deployed, then include the Live Project Link
-7. Your PPT link (Make sure to upload the PPT in this folder along with the project)
-8. Your Team Members' Info.
-
-## Step - 5: Submitting the code: Making a Pull request
-
-After you have pushed your files and code base,
-[create an issue](https://github.com/IndiaCodex/IndiaCodex-2026/issues) in the main repository as:
-
-- Issue: Team Name: Submission
-- Issue description should include a small glimpse of your project, what is it doing, and how are you trying to achieve it.
-
-After the issue is assigned, make a [Pull Request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request) from your forked repo to this repo's main branch while mentioning issue no. assigned to it.
-
-## Guides and Rules for submission:
-
-1. Make sure you fork the repository first, and create a folder with your team name.
-2. Make all your code added to your forked repo, and then push the code to your main branch after your project is complete.
-3. Make sure to push files to your folder only.
-4. Changing or doing any edits to other folders is strictly prohibited.
+**Team Name:** ADAstra
+**Project:** SHOKO
+**Track:** General Cardano — IndiaCodex'26
