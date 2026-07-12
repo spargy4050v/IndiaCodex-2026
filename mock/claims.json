@@ -1,0 +1,53 @@
+[
+  {
+    "indexer_id": "idx_nucast01",
+    "metric": "TVL",
+    "claimed_value": 1251000000.0,
+    "confidence": 0.98,
+    "action": "verify"
+  },
+  {
+    "indexer_id": "idx_meridian2",
+    "metric": "TRANSACTIONS",
+    "claimed_value": 3918500.0,
+    "confidence": 0.95,
+    "action": "verify"
+  },
+  {
+    "indexer_id": "idx_watcher05",
+    "metric": "EPOCH",
+    "claimed_value": 517.0,
+    "confidence": 0.99,
+    "action": "verify"
+  },
+  {
+    "indexer_id": "idx_aurora003",
+    "metric": "DREP_VOTES",
+    "claimed_value": 12480.0,
+    "confidence": 0.9,
+    "action": "verify"
+  },
+  {
+    "indexer_id": "idx_rogue0004",
+    "metric": "TVL",
+    "claimed_value": 1800000000.0,
+    "confidence": 0.7,
+    "action": "verify"
+  },
+  {
+    "indexer_id": "idx_rogue0004",
+    "metric": "WALLET_ACTIVITY",
+    "claimed_value": 1200000.0,
+    "confidence": 0.6,
+    "action": "challenge",
+    "challenger_id": "idx_watcher05",
+    "challenge_reason": "Wallet activity inflated far beyond canonical chain state."
+  },
+  {
+    "indexer_id": "idx_meridian2",
+    "metric": "STAKE_POOL_HEALTH",
+    "claimed_value": 92.0,
+    "confidence": 0.92,
+    "action": "pending"
+  }
+]
