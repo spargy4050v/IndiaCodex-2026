@@ -14,6 +14,7 @@ import { ErrorState } from "@/components/common/states";
 import { StatsCard } from "@/components/dashboard/StatsCard";
 import { NetworkHealthCard } from "@/components/dashboard/NetworkHealth";
 import { AttackSimulation } from "@/components/demo/AttackSimulation";
+import { OnchainPanel } from "@/components/onchain/OnchainPanel";
 import { ClaimTable } from "@/components/claims/ClaimTable";
 import { SlashHistory } from "@/components/slashing/SlashHistory";
 import { ChartCard } from "@/components/charts/ChartCard";
@@ -21,12 +22,8 @@ import { TvlChart } from "@/components/charts/TvlChart";
 import { VerificationChart } from "@/components/charts/VerificationChart";
 import { SlashChart } from "@/components/charts/SlashChart";
 import { IndexerHealthChart } from "@/components/charts/IndexerHealthChart";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Reveal, RevealGroup, RevealItem } from "@/components/ui/motion";
 import { useShokoStore } from "@/store/useShokoStore";
 import {
   buildIndexerHealth,
@@ -37,108 +34,125 @@ import {
 import { formatAda, formatCompact } from "@/lib/utils";
 
 export function Dashboard() {
-  const { dashboard, claims, indexers, slashEvents, loading, error, init } =
-    useShokoStore();
+  const {
+    dashboard,
+    claims,
+    indexers,
+    slashEvents,
+    settlements,
+    scriptInfo,
+    loading,
+    error,
+    init,
+  } = useShokoStore();
 
   if (error && !dashboard) {
     return (
-      <div className="space-y-6">
+      <>
         <PageHeader title="Dashboard" description="Protocol overview" />
         <ErrorState message={error} onRetry={init} />
-      </div>
+      </>
     );
   }
 
   const health = dashboard?.network_health;
+  const tvl =
+    dashboard?.metric_breakdown.find((m) => m.metric === "TVL")?.canonical_value ?? 0;
   const slashedIndexers = indexers.filter((i) => i.slashed_amount > 0).length;
   const isLoading = loading && !dashboard;
 
-  const tvlData = health
-    ? buildTvlHistory(
-        dashboard!.metric_breakdown.find((m) => m.metric === "TVL")?.canonical_value ?? 0,
-        health.current_epoch
-      )
-    : [];
+  const tvlData = health ? buildTvlHistory(tvl, health.current_epoch) : [];
   const verificationData = buildVerificationHistory(claims);
   const slashData = buildSlashHistory(slashEvents);
   const healthData = buildIndexerHealth(indexers);
 
   return (
-    <div className="space-y-6">
+    <>
       <PageHeader
         title="Protocol Dashboard"
         description="Real-time integrity of the shoko indexer verification network."
       />
 
       {/* Stat cards */}
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-6">
-        <StatsCard
-          label="Total Indexers"
-          value={health?.total_indexers ?? 0}
-          hint={`${health?.active_indexers ?? 0} active`}
-          icon={Users}
-          loading={isLoading}
-        />
-        <StatsCard
-          label="Verified Claims"
-          value={health?.verified_claims ?? 0}
-          hint={`${health?.total_claims ?? 0} total`}
-          icon={ShieldCheck}
-          tone="success"
-          loading={isLoading}
-        />
-        <StatsCard
-          label="Slashed Indexers"
-          value={slashedIndexers}
-          hint={`${formatAda(health?.total_slashed ?? 0)} burned`}
-          icon={ShieldAlert}
-          tone="destructive"
-          loading={isLoading}
-        />
-        <StatsCard
-          label="Network Health"
-          value={health ? health.integrity_score.toFixed(1) : "—"}
-          hint="integrity / 100"
-          icon={Gauge}
-          tone="warning"
-          loading={isLoading}
-        />
-        <StatsCard
-          label="TVL"
-          value={
-            health
-              ? formatAda(
-                  dashboard!.metric_breakdown.find((m) => m.metric === "TVL")
-                    ?.canonical_value ?? 0
-                )
-              : "—"
-          }
-          hint="canonical"
-          icon={CircleDollarSign}
-          loading={isLoading}
-        />
-        <StatsCard
-          label="Current Epoch"
-          value={health?.current_epoch ?? "—"}
-          hint="Cardano mainnet"
-          icon={Clock4}
-          loading={isLoading}
-        />
-      </div>
+      <RevealGroup className="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-6">
+        <RevealItem>
+          <StatsCard
+            label="Total Indexers"
+            count={health?.total_indexers ?? 0}
+            hint={`${health?.active_indexers ?? 0} active`}
+            icon={Users}
+            tone="neutral"
+            loading={isLoading}
+          />
+        </RevealItem>
+        <RevealItem>
+          <StatsCard
+            label="Verified Claims"
+            count={health?.verified_claims ?? 0}
+            hint={`${health?.total_claims ?? 0} total`}
+            icon={ShieldCheck}
+            tone="success"
+            loading={isLoading}
+          />
+        </RevealItem>
+        <RevealItem>
+          <StatsCard
+            label="Slashed Indexers"
+            count={slashedIndexers}
+            hint={`${formatAda(health?.total_slashed ?? 0)} burned`}
+            icon={ShieldAlert}
+            tone="destructive"
+            loading={isLoading}
+          />
+        </RevealItem>
+        <RevealItem>
+          <StatsCard
+            label="Network Health"
+            count={health?.integrity_score ?? 0}
+            format={(n) => n.toFixed(1)}
+            hint="integrity / 100"
+            icon={Gauge}
+            tone="primary"
+            loading={isLoading}
+          />
+        </RevealItem>
+        <RevealItem>
+          <StatsCard
+            label="TVL"
+            count={tvl}
+            format={(n) => formatAda(n)}
+            hint="canonical"
+            icon={CircleDollarSign}
+            tone="neutral"
+            loading={isLoading}
+          />
+        </RevealItem>
+        <RevealItem>
+          <StatsCard
+            label="Current Epoch"
+            count={health?.current_epoch ?? 0}
+            format={(n) => Math.round(n).toString()}
+            hint="Cardano mainnet"
+            icon={Clock4}
+            tone="neutral"
+            loading={isLoading}
+          />
+        </RevealItem>
+      </RevealGroup>
 
-      {/* Health + indexer health chart */}
-      <div className="grid gap-4 lg:grid-cols-2">
+      {/* Network health + on-chain settlement (frontend ↔ backend ↔ chain) */}
+      <Reveal delay={0.05} className="grid gap-4 lg:grid-cols-2">
         {health ? <NetworkHealthCard health={health} /> : <Card className="h-64" />}
-        <ChartCard
-          title="Indexer Health"
-          description="Reputation vs. accuracy across indexers"
-        >
-          <IndexerHealthChart data={healthData} />
-        </ChartCard>
-      </div>
+        <OnchainPanel info={scriptInfo} settlements={settlements} />
+      </Reveal>
+
+      {/* Hero: live attack simulation */}
+      <Reveal delay={0.05}>
+        <AttackSimulation />
+      </Reveal>
 
       {/* Charts */}
-      <div className="grid gap-4 lg:grid-cols-3">
+      <Reveal delay={0.05} className="grid gap-4 lg:grid-cols-3">
         <ChartCard title="TVL History" description="Total value locked by epoch">
           <TvlChart data={tvlData} />
         </ChartCard>
@@ -148,13 +162,20 @@ export function Dashboard() {
         <ChartCard title="Slash History" description="Cumulative stake slashed">
           <SlashChart data={slashData} />
         </ChartCard>
-      </div>
+      </Reveal>
 
-      {/* Attack simulation */}
-      <AttackSimulation />
+      <Reveal delay={0.05}>
+        <ChartCard
+          title="Indexer Health"
+          description="Reputation vs. accuracy across indexers"
+          height={260}
+        >
+          <IndexerHealthChart data={healthData} />
+        </ChartCard>
+      </Reveal>
 
       {/* Recent activity */}
-      <div className="grid gap-4 xl:grid-cols-2">
+      <Reveal delay={0.05} className="grid gap-4 xl:grid-cols-2">
         <Card>
           <CardHeader className="flex-row items-center justify-between space-y-0">
             <CardTitle>Recent Claims</CardTitle>
@@ -173,12 +194,13 @@ export function Dashboard() {
             <SlashHistory events={slashEvents.slice(0, 6)} indexers={indexers} />
           </CardContent>
         </Card>
-      </div>
+      </Reveal>
 
       <p className="pt-2 text-center text-xs text-muted-foreground">
         Canonical values reconciled from Koios &amp; Blockfrost ·{" "}
-        {formatCompact(health?.total_claims ?? 0)} claims processed
+        {formatCompact(health?.total_claims ?? 0)} claims processed · settled on{" "}
+        {scriptInfo?.network ?? "Cardano"}
       </p>
-    </div>
+    </>
   );
 }

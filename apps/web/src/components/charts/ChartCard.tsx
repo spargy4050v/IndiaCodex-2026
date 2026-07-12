@@ -10,15 +10,17 @@ export function ChartCard({
   title,
   description,
   action,
+  height = 240,
   children,
 }: {
   title: string;
   description?: string;
   action?: React.ReactNode;
+  height?: number;
   children: React.ReactNode;
 }) {
   return (
-    <Card>
+    <Card className="card-hover">
       <CardHeader className="flex-row items-start justify-between space-y-0">
         <div className="space-y-1">
           <CardTitle>{title}</CardTitle>
@@ -27,19 +29,21 @@ export function ChartCard({
         {action}
       </CardHeader>
       <CardContent>
-        <div className="h-[240px] w-full">{children}</div>
+        <div style={{ height }} className="w-full">
+          {children}
+        </div>
       </CardContent>
     </Card>
   );
 }
 
 export const CHART_COLORS = {
-  primary: "hsl(239 84% 67%)",
-  success: "hsl(152 62% 45%)",
-  destructive: "hsl(0 72% 55%)",
+  primary: "hsl(213 94% 62%)",
+  success: "hsl(151 66% 43%)",
+  destructive: "hsl(0 74% 55%)",
   warning: "hsl(38 92% 55%)",
-  muted: "hsl(240 5% 40%)",
-  grid: "hsl(240 5% 18%)",
+  muted: "hsl(218 11% 45%)",
+  grid: "hsl(220 12% 16%)",
 };
 
 export function ChartTooltip({

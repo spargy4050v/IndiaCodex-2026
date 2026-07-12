@@ -158,3 +158,38 @@ export interface CreateClaimPayload {
   confidence?: number;
   verify?: boolean;
 }
+
+export type SettlementRedeemer = "SubmitClaim" | "FinalizeClaim" | "SlashClaim";
+
+export interface ChainSettlement {
+  settlement_id: string;
+  action: string; // FINALIZE_CLAIM | SLASH_CLAIM | LOCK_STAKE
+  redeemer: SettlementRedeemer;
+  claim_id: string;
+  indexer_id: string;
+  challenger_id: string | null;
+  metric: string;
+  claimed_value: number;
+  lovelace: number;
+  reward_lovelace: number;
+  network: string;
+  script_address: string;
+  datum: Record<string, unknown>;
+  redeemer_data: Record<string, unknown>;
+  tx_ref: string;
+  status: string;
+  explorer_url: string;
+  created_at: string;
+}
+
+export interface ScriptInfo {
+  network: string;
+  script_address: string;
+  challenger_reward_bps: number;
+  validator: string;
+  plutus_version: string;
+  settlements: number;
+  total_locked_lovelace: number;
+  total_locked_ada: number;
+  total_challenger_rewards_lovelace: number;
+}

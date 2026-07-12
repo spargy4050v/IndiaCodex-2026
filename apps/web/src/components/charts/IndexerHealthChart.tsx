@@ -40,8 +40,22 @@ export function IndexerHealthChart({ data }: { data: HealthPoint[] }) {
           width={90}
         />
         <Tooltip content={<ChartTooltip />} cursor={{ fill: "hsl(240 5% 12% / 0.5)" }} />
-        <Bar dataKey="reputation" name="reputation" fill={CHART_COLORS.primary} radius={[0, 4, 4, 0]} isAnimationActive={false} />
-        <Bar dataKey="accuracy" name="accuracy" fill={CHART_COLORS.success} radius={[0, 4, 4, 0]} isAnimationActive={false} />
+        <Bar
+          dataKey="reputation"
+          name="reputation"
+          fill={CHART_COLORS.primary}
+          radius={[0, 4, 4, 0]}
+          animationDuration={650}
+          animationEasing="ease-out"
+        />
+        <Bar
+          dataKey="accuracy"
+          name="accuracy"
+          fill={CHART_COLORS.success}
+          radius={[0, 4, 4, 0]}
+          animationDuration={650}
+          animationEasing="ease-out"
+        />
       </BarChart>
     </ResponsiveContainer>
   );

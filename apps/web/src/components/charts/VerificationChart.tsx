@@ -33,8 +33,22 @@ export function VerificationChart({ data }: { data: VerificationPoint[] }) {
           allowDecimals={false}
         />
         <Tooltip content={<ChartTooltip />} cursor={{ fill: "hsl(240 5% 12% / 0.5)" }} />
-        <Bar dataKey="verified" name="verified" stackId="v" fill={CHART_COLORS.success} radius={[0, 0, 0, 0]} isAnimationActive={false} />
-        <Bar dataKey="invalid" name="invalid" stackId="v" fill={CHART_COLORS.destructive} radius={[3, 3, 0, 0]} isAnimationActive={false} />
+        <Bar
+          dataKey="verified"
+          name="verified"
+          stackId="v"
+          fill={CHART_COLORS.success}
+          radius={[0, 0, 0, 0]}
+          animationDuration={650}
+        />
+        <Bar
+          dataKey="invalid"
+          name="invalid"
+          stackId="v"
+          fill={CHART_COLORS.destructive}
+          radius={[4, 4, 0, 0]}
+          animationDuration={650}
+        />
       </BarChart>
     </ResponsiveContainer>
   );

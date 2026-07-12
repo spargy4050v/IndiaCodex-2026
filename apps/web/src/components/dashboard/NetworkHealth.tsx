@@ -37,9 +37,15 @@ export function NetworkHealthCard({ health }: { health: NetworkHealthType }) {
   const toneRing =
     badge.tone === "success"
       ? "text-success"
-      : badge.tone === "warning"
-      ? "text-warning"
+      : badge.tone === "info"
+      ? "text-primary"
       : "text-destructive";
+  const toneBar =
+    badge.tone === "success"
+      ? "bg-success"
+      : badge.tone === "info"
+      ? "bg-primary"
+      : "bg-destructive";
 
   return (
     <Card>
@@ -59,16 +65,7 @@ export function NetworkHealthCard({ health }: { health: NetworkHealthType }) {
             <p className="text-xs text-muted-foreground">Integrity score / 100</p>
           </div>
           <div className="flex-1 pb-1">
-            <Progress
-              value={health.integrity_score}
-              indicatorClassName={
-                badge.tone === "success"
-                  ? "bg-success"
-                  : badge.tone === "warning"
-                  ? "bg-warning"
-                  : "bg-destructive"
-              }
-            />
+            <Progress value={health.integrity_score} indicatorClassName={toneBar} />
           </div>
         </div>
 

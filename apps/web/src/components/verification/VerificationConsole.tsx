@@ -15,7 +15,11 @@ import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
-import { VerificationBadge } from "@/components/verification/VerificationBadge";
+import {
+  AnimatedVerificationBadge,
+  VerificationBadge,
+  type LiveVerifyPhase,
+} from "@/components/verification/VerificationBadge";
 import { shokoApi } from "@/services/shoko";
 import { useShokoStore } from "@/store/useShokoStore";
 import { apiError } from "@/lib/api";
@@ -40,6 +44,7 @@ export function VerificationConsole() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<VerifyResponse | null>(null);
+  const [phase, setPhase] = useState<LiveVerifyPhase>("idle");
 
   const canonical = useMemo(
     () =>
@@ -59,6 +64,7 @@ export function VerificationConsole() {
     setBusy(true);
     setError(null);
     setResult(null);
+    setPhase("verifying");
     try {
       const res = (await shokoApi.createClaim({
         indexer_id: activeIndexer,
@@ -67,9 +73,11 @@ export function VerificationConsole() {
         verify: true,
       })) as VerifyResponse;
       setResult(res);
+      setPhase(res.verification.status === "VERIFIED" ? "verified" : "rejected");
       await refresh();
     } catch (e) {
       setError(apiError(e));
+      setPhase("idle");
     } finally {
       setBusy(false);
     }
@@ -80,14 +88,17 @@ export function VerificationConsole() {
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <FlaskConical className="size-4 text-primary" />
-          Verification Console
-        </CardTitle>
-        <CardDescription>
-          Submit a metric claim and verify it against canonical consensus data in real time.
-        </CardDescription>
+      <CardHeader className="flex-row items-start justify-between space-y-0">
+        <div className="space-y-1.5">
+          <CardTitle className="flex items-center gap-2">
+            <FlaskConical className="size-4 text-primary" />
+            Verification Console
+          </CardTitle>
+          <CardDescription>
+            Submit a metric claim and verify it against canonical consensus data in real time.
+          </CardDescription>
+        </div>
+        <AnimatedVerificationBadge phase={phase} />
       </CardHeader>
       <CardContent className="space-y-5">
         <div className="grid gap-4 sm:grid-cols-2">

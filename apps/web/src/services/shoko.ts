@@ -1,5 +1,6 @@
 import { api } from "@/lib/api";
 import type {
+  ChainSettlement,
   ChainSnapshot,
   Challenge,
   ChallengeResponse,
@@ -10,6 +11,7 @@ import type {
   IndexerView,
   Metric,
   NetworkHealth,
+  ScriptInfo,
   SlashEvent,
   VerifyResponse,
 } from "@/types";
@@ -73,6 +75,18 @@ export const shokoApi = {
 
   async getChain(): Promise<ChainSnapshot> {
     const { data } = await api.get<ChainSnapshot>("/chain");
+    return data;
+  },
+
+  async getSettlements(claimId?: string): Promise<ChainSettlement[]> {
+    const { data } = await api.get<ChainSettlement[]>("/onchain/settlements", {
+      params: claimId ? { claim_id: claimId } : undefined,
+    });
+    return data;
+  },
+
+  async getScriptInfo(): Promise<ScriptInfo> {
+    const { data } = await api.get<ScriptInfo>("/onchain/script");
     return data;
   },
 };

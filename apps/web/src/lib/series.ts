@@ -105,10 +105,10 @@ export function buildIndexerHealth(indexers: IndexerView[]): HealthPoint[] {
 
 export function integrityBadge(health: NetworkHealth): {
   label: string;
-  tone: "success" | "warning" | "destructive";
+  tone: "success" | "info" | "destructive";
 } {
   const s = health.integrity_score;
   if (s >= 85) return { label: "Healthy", tone: "success" };
-  if (s >= 65) return { label: "Watch", tone: "warning" };
+  if (s >= 65) return { label: "Watch", tone: "info" };
   return { label: "At Risk", tone: "destructive" };
 }

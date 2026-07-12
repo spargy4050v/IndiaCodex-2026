@@ -2,9 +2,11 @@ import { create } from "zustand";
 import { apiError } from "@/lib/api";
 import { shokoApi } from "@/services/shoko";
 import type {
+  ChainSettlement,
   Claim,
   DashboardResponse,
   IndexerView,
+  ScriptInfo,
   SlashEvent,
 } from "@/types";
 
@@ -13,6 +15,8 @@ interface ShokoState {
   claims: Claim[];
   indexers: IndexerView[];
   slashEvents: SlashEvent[];
+  settlements: ChainSettlement[];
+  scriptInfo: ScriptInfo | null;
 
   loading: boolean;
   refreshing: boolean;
@@ -26,13 +30,16 @@ interface ShokoState {
 }
 
 async function loadAll() {
-  const [dashboard, claims, indexers, slashEvents] = await Promise.all([
-    shokoApi.getDashboard(),
-    shokoApi.getClaims(),
-    shokoApi.getIndexers(),
-    shokoApi.getSlashEvents(),
-  ]);
-  return { dashboard, claims, indexers, slashEvents };
+  const [dashboard, claims, indexers, slashEvents, settlements, scriptInfo] =
+    await Promise.all([
+      shokoApi.getDashboard(),
+      shokoApi.getClaims(),
+      shokoApi.getIndexers(),
+      shokoApi.getSlashEvents(),
+      shokoApi.getSettlements().catch(() => [] as ChainSettlement[]),
+      shokoApi.getScriptInfo().catch(() => null),
+    ]);
+  return { dashboard, claims, indexers, slashEvents, settlements, scriptInfo };
 }
 
 export const useShokoStore = create<ShokoState>((set) => ({
@@ -40,6 +47,8 @@ export const useShokoStore = create<ShokoState>((set) => ({
   claims: [],
   indexers: [],
   slashEvents: [],
+  settlements: [],
+  scriptInfo: null,
   loading: true,
   refreshing: false,
   error: null,
