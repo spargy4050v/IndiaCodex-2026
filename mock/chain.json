@@ -1,0 +1,31 @@
+{
+  "network": "cardano-mainnet-mock",
+  "epoch": 517,
+  "slot": 145820934,
+  "updated_at": "2026-07-12T00:00:00Z",
+  "metrics": {
+    "TVL": 1250000000.0,
+    "STAKE_POOL_HEALTH": 92.5,
+    "WALLET_ACTIVITY": 845000.0,
+    "DREP_VOTES": 12450.0,
+    "TRANSACTIONS": 3920000.0,
+    "EPOCH": 517.0
+  },
+  "stake_pools": [
+    { "ticker": "NUCA", "pledge": 5000000, "live_stake": 62000000, "saturation": 0.71, "blocks_epoch": 34 },
+    { "ticker": "SHOKO", "pledge": 3000000, "live_stake": 48500000, "saturation": 0.55, "blocks_epoch": 27 },
+    { "ticker": "INDIA", "pledge": 1000000, "live_stake": 22000000, "saturation": 0.25, "blocks_epoch": 12 },
+    { "ticker": "CODEX", "pledge": 750000, "live_stake": 18900000, "saturation": 0.21, "blocks_epoch": 10 }
+  ],
+  "dreps": [
+    { "drep_id": "drep1qy...aaa", "voting_power": 4200000, "votes_cast": 4820, "active": true },
+    { "drep_id": "drep1qz...bbb", "voting_power": 3100000, "votes_cast": 3910, "active": true },
+    { "drep_id": "drep1qw...ccc", "voting_power": 1850000, "votes_cast": 2470, "active": true },
+    { "drep_id": "drep1qv...ddd", "voting_power": 900000, "votes_cast": 1250, "active": false }
+  ],
+  "wallets": {
+    "total": 4820000,
+    "active_epoch": 845000,
+    "new_epoch": 21400
+  }
+}

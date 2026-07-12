@@ -1,0 +1,42 @@
+[
+  {
+    "indexer_id": "idx_nucast01",
+    "name": "Nucast Prime",
+    "stake": 500000.0,
+    "reputation": 94.0,
+    "joined_epoch": 480,
+    "active": true
+  },
+  {
+    "indexer_id": "idx_meridian2",
+    "name": "Meridian Labs",
+    "stake": 320000.0,
+    "reputation": 88.0,
+    "joined_epoch": 492,
+    "active": true
+  },
+  {
+    "indexer_id": "idx_aurora003",
+    "name": "Aurora Index",
+    "stake": 210000.0,
+    "reputation": 79.0,
+    "joined_epoch": 501,
+    "active": true
+  },
+  {
+    "indexer_id": "idx_rogue0004",
+    "name": "Rogue Node",
+    "stake": 150000.0,
+    "reputation": 61.0,
+    "joined_epoch": 508,
+    "active": true
+  },
+  {
+    "indexer_id": "idx_watcher05",
+    "name": "Watchtower",
+    "stake": 275000.0,
+    "reputation": 90.0,
+    "joined_epoch": 486,
+    "active": true
+  }
+]

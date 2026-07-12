@@ -1,0 +1,40 @@
+{
+  "metrics": {
+    "TVL": {
+      "label": "Total Value Locked",
+      "unit": "ADA",
+      "description": "Aggregate value locked across Cardano DeFi protocols.",
+      "format": "currency"
+    },
+    "STAKE_POOL_HEALTH": {
+      "label": "Stake Pool Health",
+      "unit": "score",
+      "description": "Composite health index of active stake pools (0-100).",
+      "format": "score"
+    },
+    "WALLET_ACTIVITY": {
+      "label": "Wallet Activity",
+      "unit": "wallets",
+      "description": "Active wallets transacting in the current epoch.",
+      "format": "number"
+    },
+    "DREP_VOTES": {
+      "label": "DRep Votes",
+      "unit": "votes",
+      "description": "Governance votes cast by delegated representatives.",
+      "format": "number"
+    },
+    "TRANSACTIONS": {
+      "label": "Transactions",
+      "unit": "tx",
+      "description": "Total transactions settled in the current epoch.",
+      "format": "number"
+    },
+    "EPOCH": {
+      "label": "Epoch",
+      "unit": "epoch",
+      "description": "Current Cardano epoch number.",
+      "format": "integer"
+    }
+  }
+}
